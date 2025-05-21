@@ -11,7 +11,7 @@ import {
 } from '@ionic/react';
 
 import { useLocation } from 'react-router-dom';
-import { archiveOutline, archiveSharp, bookmarkOutline, heartOutline, heartSharp, mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, trashOutline, trashSharp, warningOutline, warningSharp } from 'ionicons/icons';
+import {man,pricetagOutline, folderOpenOutline,clipboardOutline,logoAppleAppstore, menu,archiveOutline, archiveSharp, bookmarkOutline, heartOutline, heartSharp, mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, trashOutline, trashSharp, warningOutline, warningSharp, people , peopleOutline, carOutline, car, manOutline, pricetag} from 'ionicons/icons';
 import './Menu.css';
 
 interface AppPage {
@@ -23,40 +23,46 @@ interface AppPage {
 
 const appPages: AppPage[] = [
   {
-    title: 'Inbox',
-    url: '/folder/Inbox',
-    iosIcon: mailOutline,
-    mdIcon: mailSharp
+    title: 'Inicio',
+    url: '/folder/Inicio',
+    iosIcon: menu,
+    mdIcon: menu
   },
   {
-    title: 'Outbox',
-    url: '/folder/Outbox',
-    iosIcon: paperPlaneOutline,
-    mdIcon: paperPlaneSharp
+    title: 'Gestión de Pedidos',
+    url: '/folder/Gestiondepedidos',
+    iosIcon: pricetagOutline,
+    mdIcon: pricetag
   },
   {
-    title: 'Favorites',
-    url: '/folder/Favorites',
-    iosIcon: heartOutline,
-    mdIcon: heartSharp
+    title: 'Clientes',
+    url: '/folder/Clientes',
+    iosIcon: peopleOutline,
+    mdIcon: people
   },
   {
-    title: 'Archived',
-    url: '/folder/Archived',
-    iosIcon: archiveOutline,
-    mdIcon: archiveSharp
+    title: 'Almacén',
+    url: '/folder/Almacen  ',
+    iosIcon: folderOpenOutline,
+    mdIcon: folderOpenOutline
   },
   {
-    title: 'Trash',
-    url: '/folder/Trash',
-    iosIcon: trashOutline,
-    mdIcon: trashSharp
+    title: 'Repartidores',
+    url: '/folder/Repartidores',
+    iosIcon: manOutline,
+    mdIcon: man  
   },
   {
-    title: 'Spam',
-    url: '/folder/Spam',
-    iosIcon: warningOutline,
-    mdIcon: warningSharp
+    title: 'Vehículos',
+    url: '/folder/Vehiculos',
+    iosIcon: carOutline,
+    mdIcon: car
+  },
+  {
+    title: 'Reportes',
+    url: '/folder/Reportes',
+    iosIcon: clipboardOutline,
+    mdIcon: clipboardOutline
   }
 ];
 
@@ -68,9 +74,9 @@ const Menu: React.FC = () => {
   return (
     <IonMenu contentId="main" type="overlay">
       <IonContent>
-        <IonList id="inbox-list">
-          <IonListHeader>Inbox</IonListHeader>
-          <IonNote>hi@ionicframework.com</IonNote>
+        <IonList id="Enlatados MG S.A-list">
+          <IonListHeader>Proyectos Enlatados MG</IonListHeader>
+          <IonNote>clientes@enlatadosmg.com.gt</IonNote>
           {appPages.map((appPage, index) => {
             return (
               <IonMenuToggle key={index} autoHide={false}>
