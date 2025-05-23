@@ -36,7 +36,7 @@ const appPages: AppPage[] = [
   },
   {
     title: 'Clientes',
-    url: '/folder/Clientes',
+    url: '/page/Customer',
     iosIcon: peopleOutline,
     mdIcon: people
   },
