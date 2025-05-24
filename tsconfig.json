@@ -1,11 +1,12 @@
+
 {
   "compilerOptions": {
     "target": "ESNext",
     "useDefineForClassFields": true,
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "allowJs": false,
-    "skipLibCheck": true,
-    "esModuleInterop": false,
+    "skipLibCheck": false, // Cambiado a false para mejor verificación
+    "esModuleInterop": true, // Cambiado a true para Ionic
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
@@ -14,8 +15,16 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "baseUrl": "src", // Añadido para rutas absolutas
+    "paths": { // Añadido para alias de imports
+      "@/*": ["*"],
+      "@components/*": ["components/*"],
+      "@pages/*": ["pages/*"]
+    },
+    "types": ["vite/client", "node"] // Añadido para Vite y Node
   },
-  "include": ["src"],
+  "include": ["src", "vite.config.ts"],
+  "exclude": ["node_modules"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

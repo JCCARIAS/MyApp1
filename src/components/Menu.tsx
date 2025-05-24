@@ -24,19 +24,19 @@ interface AppPage {
 const appPages: AppPage[] = [
   {
     title: 'Inicio',
-    url: '/folder/Inicio',
+    url: '/page/Inicio',
     iosIcon: menu,
     mdIcon: menu
   },
   {
     title: 'Gestión de Pedidos',
-    url: '/folder/Gestiondepedidos',
+    url: '/page/Gestiondepedidos',
     iosIcon: pricetagOutline,
     mdIcon: pricetag
   },
   {
     title: 'Clientes',
-    url: '/page/Customer',
+    url: '/folder/Customer',
     iosIcon: peopleOutline,
     mdIcon: people
   },
@@ -48,19 +48,19 @@ const appPages: AppPage[] = [
   },
   {
     title: 'Repartidores',
-    url: '/folder/Repartidores',
+    url: '/page/Repartidores',
     iosIcon: manOutline,
     mdIcon: man  
   },
   {
     title: 'Vehículos',
-    url: '/folder/Vehiculos',
+    url: '/page/Vehiculos',
     iosIcon: carOutline,
     mdIcon: car
   },
   {
     title: 'Reportes',
-    url: '/folder/Reportes',
+    url: '/page/Reportes',
     iosIcon: clipboardOutline,
     mdIcon: clipboardOutline
   }

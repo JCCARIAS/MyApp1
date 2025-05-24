@@ -59,6 +59,8 @@ const CustomerEdit: React.FC = () => {
           <IonCard>
             <IonTitle>{id === 'new' ? 'Agregar Cliente' : 'Editar Cliente'}</IonTitle>
 
+
+
             <IonRow>
               <IonCol>
                 <IonItem>
