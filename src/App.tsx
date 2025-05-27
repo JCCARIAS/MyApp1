@@ -50,10 +50,10 @@ const App: React.FC = () => {
               <Redirect to="/page/customers" />
             </Route>
             
-            <Route path="/page/customers" exact>
-              <CustomerList name="Clientes" />
+           <Route path="/page/customers" exact>
+        <CustomerList name="Clientes" />
             </Route>
-                       {/* Otras rutas que puedas tener */}
+
           </IonRouterOutlet>
         </IonSplitPane>
       </IonReactRouter>
