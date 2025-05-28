@@ -1,78 +1,60 @@
 import { 
-  IonButtons, 
-  IonContent, 
-  IonHeader, 
-  IonMenuButton, 
-  IonPage, 
-  IonTitle, 
-  IonToolbar, 
-  IonGrid, 
-  IonCol, 
-  IonRow, 
-  IonButton, 
-  IonCard, 
-  IonIcon, 
-  IonItem 
+  IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, 
+  IonTitle, IonToolbar, IonGrid, IonCol, IonRow, IonButton, 
+  IonCard, IonIcon, IonItem, IonInput, IonModal, IonLabel
 } from '@ionic/react';
-import { useParams } from 'react-router';
-import { add, pencil, close } from 'ionicons/icons';
-import { useState } from 'react';
-
-// Definición de tipo para Customer
-interface Customer {
-  id: string;
-  firstname: string;
-  lastname: string;
-  email: string;
-  phone: string;
-  address: string;
-}
+import { add, pencil, close, save } from 'ionicons/icons';
+import { useEffect, useState } from 'react';
+import { getCustomers, saveCustomer, deleteCustomer, getCustomerById } from '../../pages/customer/CustomerApi';
+import './CustomerList.css';
 
 const CustomerList: React.FC = () => {
-  const { name } = useParams<{ name: string; }>();
-  
-  // Estado para los clientes con datos de ejemplo
-  const [clients, setClients] = useState<Customer[]>([
-    {
-      id: '1',
-      firstname: 'Juan',
-      lastname: 'Pérez',
-      email: 'juan@example.com',
-      phone: '555-1234',
-      address: 'Calle Principal 123'
-    },
-    {
-      id: '2',
-      firstname: 'María',
-      lastname: 'Gómez',
-      email: 'maria@example.com',
-      phone: '555-5678',
-      address: 'Avenida Central 456'
+  const [customers, setCustomers] = useState<Customer[]>([]);
+  const [editingCustomer, setEditingCustomer] = useState<Customer | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Cargar clientes al iniciar
+  useEffect(() => {
+    loadCustomers();
+  }, []);
+
+  const loadCustomers = () => {
+    setCustomers(getCustomers());
+  };
+
+  const handleAddCustomer = () => {
+    setEditingCustomer({
+      id: '',
+      firstname: '',
+      lastname: '',
+      email: '',
+      phone: '',
+      address: ''
+    });
+    setIsModalOpen(true);
+  };
+
+  const handleEditCustomer = (id: string) => {
+    const customer = getCustomerById(id);
+    if (customer) {
+      setEditingCustomer(customer);
+      setIsModalOpen(true);
     }
-  ]);
-
-  // Función para agregar cliente
-  const addCustomer = () => {
-    const newCustomer: Customer = {
-      id: (clients.length + 1).toString(),
-      firstname: 'Nuevo',
-      lastname: 'Cliente',
-      email: 'nuevo@example.com',
-      phone: '555-0000',
-      address: 'Dirección nueva'
-    };
-    setClients([...clients, newCustomer]);
   };
 
-  // Función para editar cliente
-  const editCustomer = (id: string) => {
-    console.log('Editar cliente con id:', id);
-    // Aquí iría la lógica para editar
+  const handleSaveCustomer = () => {
+    if (editingCustomer) {
+      saveCustomer(editingCustomer);
+      loadCustomers();
+      setIsModalOpen(false);
+    }
   };
 
-  // Función para eliminar cliente
-  const removeCustomer = (id: string) => {
-    setClients(clients.filter(client => client.id !== id));
+  const handleRemoveCustomer = (id: string) => {
+    if (window.confirm('¿Estás seguro de eliminar este cliente?')) {
+      deleteCustomer(id);
+      loadCustomers();
+    }
   };
 
   return (
@@ -82,23 +64,21 @@ const CustomerList: React.FC = () => {
           <IonButtons slot="start">
             <IonMenuButton />
           </IonButtons>
-          <IonTitle>{name || 'Clientes'}</IonTitle>
+          <IonTitle>Gestión de Clientes</IonTitle>
         </IonToolbar>
       </IonHeader>
 
       <IonContent fullscreen>
         <IonCard>
-          <IonTitle>Gestión de Clientes</IonTitle>
-
           <IonItem>
-            <IonButton onClick={addCustomer} color="primary" fill="solid" slot="end">
-              <IonIcon icon={add} />
+            <IonButton onClick={handleAddCustomer} color="primary" fill="solid" slot="end">
+              <IonIcon icon={add} slot="start" />
               Agregar Cliente
             </IonButton>
           </IonItem>
 
-          <IonGrid className="table">
-            <IonRow>
+          <IonGrid className="customer-table">
+            <IonRow className="table-header">
               <IonCol>Nombre</IonCol>
               <IonCol>Email</IonCol>
               <IonCol>Teléfono</IonCol>
@@ -106,20 +86,25 @@ const CustomerList: React.FC = () => {
               <IonCol>Acciones</IonCol>
             </IonRow>
 
-            {clients.map((client) => (
-              <IonRow key={client.id}>
-                <IonCol>{client.firstname} {client.lastname}</IonCol>
-                <IonCol>{client.email}</IonCol>
-                <IonCol>{client.phone}</IonCol>
-                <IonCol>{client.address}</IonCol>
-                <IonCol>
-                  <IonButton color="primary" fill="clear"
-                    onClick={() => editCustomer(client.id)}>
+            {customers.map((customer) => (
+              <IonRow key={customer.id} className="table-row">
+                <IonCol>{customer.firstname} {customer.lastname}</IonCol>
+                <IonCol>{customer.email}</IonCol>
+                <IonCol>{customer.phone}</IonCol>
+                <IonCol>{customer.address}</IonCol>
+                <IonCol className="actions-col">
+                  <IonButton 
+                    color="primary" 
+                    fill="clear"
+                    onClick={() => handleEditCustomer(customer.id)}
+                  >
                     <IonIcon icon={pencil} slot="icon-only" />
                   </IonButton>
-
-                  <IonButton color="danger" fill="clear"
-                    onClick={() => removeCustomer(client.id)}>
+                  <IonButton 
+                    color="danger" 
+                    fill="clear"
+                    onClick={() => handleRemoveCustomer(customer.id)}
+                  >
                     <IonIcon icon={close} slot="icon-only" />
                   </IonButton>
                 </IonCol>
@@ -127,6 +112,72 @@ const CustomerList: React.FC = () => {
             ))}
           </IonGrid>
         </IonCard>
+
+        {/* Modal para edición/creación */}
+        <IonModal isOpen={isModalOpen} onDidDismiss={() => setIsModalOpen(false)}>
+          <IonContent>
+            <IonToolbar>
+              <IonTitle>{editingCustomer?.id ? 'Editar Cliente' : 'Nuevo Cliente'}</IonTitle>
+              <IonButtons slot="end">
+                <IonButton onClick={() => setIsModalOpen(false)}>Cerrar</IonButton>
+              </IonButtons>
+            </IonToolbar>
+            
+            {editingCustomer && (
+              <div className="ion-padding">
+                <IonItem>
+                  <IonLabel position="stacked">Nombre</IonLabel>
+                  <IonInput
+                    value={editingCustomer.firstname}
+                    onIonChange={e => setEditingCustomer({...editingCustomer, firstname: e.detail.value!})}
+                  />
+                </IonItem>
+                
+                <IonItem>
+                  <IonLabel position="stacked">Apellido</IonLabel>
+                  <IonInput
+                    value={editingCustomer.lastname}
+                    onIonChange={e => setEditingCustomer({...editingCustomer, lastname: e.detail.value!})}
+                  />
+                </IonItem>
+                
+                <IonItem>
+                  <IonLabel position="stacked">Email</IonLabel>
+                  <IonInput
+                    value={editingCustomer.email}
+                    onIonChange={e => setEditingCustomer({...editingCustomer, email: e.detail.value!})}
+                  />
+                </IonItem>
+                
+                <IonItem>
+                  <IonLabel position="stacked">Teléfono</IonLabel>
+                  <IonInput
+                    value={editingCustomer.phone}
+                    onIonChange={e => setEditingCustomer({...editingCustomer, phone: e.detail.value!})}
+                  />
+                </IonItem>
+                
+                <IonItem>
+                  <IonLabel position="stacked">Dirección</IonLabel>
+                  <IonInput
+                    value={editingCustomer.address}
+                    onIonChange={e => setEditingCustomer({...editingCustomer, address: e.detail.value!})}
+                  />
+                </IonItem>
+                
+                <IonButton 
+                  expand="block" 
+                  color="primary" 
+                  onClick={handleSaveCustomer}
+                  className="ion-margin-top"
+                >
+                  <IonIcon icon={save} slot="start" />
+                  Guardar
+                </IonButton>
+              </div>
+            )}
+          </IonContent>
+        </IonModal>
       </IonContent>
     </IonPage>
   );
